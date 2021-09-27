@@ -13,8 +13,6 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
 
         val btnRegister = findViewById<Button>(R.id.btnRegister)
-        val btnRead = findViewById<Button>(R.id.btnRead)
-        val btnClearUsers = findViewById<Button>(R.id.btnClear)
 
         val tvRegister = findViewById<TextView>(R.id.tvRegister)
 
@@ -23,32 +21,19 @@ class RegisterActivity : AppCompatActivity() {
         var inputPasswordConfirm = findViewById<EditText>(R.id.register_password_confirmation)
         val db = DBHelper(this)
 
-        btnRegister.setOnClickListener{
+        btnRegister.setOnClickListener {
             println("$inputPassword =?= $inputPasswordConfirm")
-            if (inputPassword.text.toString() == inputPasswordConfirm.text.toString()) {
-                if (!db.isRegistered(inputUsername.text.toString())) {
+            if (!db.isRegistered(inputUsername.text.toString())) {
+                if (inputPassword.text.toString() == inputPasswordConfirm.text.toString()) {
                     db.register(inputUsername.text.toString(), inputPassword.text.toString())
+                    Toast.makeText(this,"Succesfully registered!", Toast.LENGTH_SHORT).show()
+                    finish()
                 } else {
-                    Toast.makeText(this, "User is already registered", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "User is already registered", Toast.LENGTH_SHORT).show()
             }
-        }
-
-        btnRead.setOnClickListener{
-            val data = db.getUserTable()
-            tvRegister.text = ""
-
-            for (i in 0 until data.size) {
-                tvRegister.append(
-                    "${data[i].userID} : ${data[i].username} : ${data[i].password}\n"
-                )
-            }
-        }
-
-        btnClearUsers.setOnClickListener{
-            db.dropUsersTable()
         }
     }
 

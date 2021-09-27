@@ -28,7 +28,17 @@
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_weight="1"></Space>
+                    android:layout_weight="0.4"></Space>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:src="@drawable/logo_today"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="0.4"></Space>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -55,6 +65,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="50sp"
+
                         android:text="Login" />
                 </LinearLayout>
 

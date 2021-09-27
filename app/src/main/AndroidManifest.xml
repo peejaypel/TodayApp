@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.peejaypel.todayapp" >
+    package="com.peejaypel.todayapp">
 
     <application
         android:allowBackup="true"
@@ -8,18 +8,24 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TodayApp" >
+        android:theme="@style/Theme.TodayApp.NoActionBar">
         <activity
-            android:name=".TodoHome"
+            android:name=".TodoAddActivity"
+            android:exported="true"
+            android:theme="@style/Theme.TodayApp.NoActionBar" />
+        <activity
+            android:name=".TodoHomeActivity"
             android:exported="true"
             android:label="@string/title_activity_todo_home"
             android:theme="@style/Theme.TodayApp.NoActionBar" />
         <activity
             android:name=".RegisterActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.TodayApp.NoActionBar" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true"
+            android:theme="@style/Theme.TodayApp.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

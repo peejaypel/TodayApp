@@ -4,13 +4,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TodoHome">
+    tools:context=".TodoHomeActivity">
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rvTodo"
+        android:background="@color/todayPink"
+        android:id="@+id/userBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:padding="10dp"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvGreeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hi, user!"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/white"
+                android:textSize="40dp"/>
+
+            <TextView
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="textEnd"
+                android:text="@string/logout"
+                android:textColor="#715353"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
+            android:text="You have 5 tasks for today"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
+            android:text="July 20, 2021"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTodo"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/userBar"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:src="@drawable/ic_baseline_note_add_24"
+        android:id="@+id/btnAddTodo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Yay you have logged in"
-        tools:layout_editor_absoluteX="142dp"
-        tools:layout_editor_absoluteY="241dp" />
+        android:layout_gravity="end|bottom"
+        android:layout_margin="30dp"
+        android:theme="@style/Theme.TodayApp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

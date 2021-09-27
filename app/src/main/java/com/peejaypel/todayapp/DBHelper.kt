@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import java.time.LocalDateTime
 
 // here we have defined variables for our database
 
@@ -24,8 +25,8 @@ val TABLE_TODOS = "todos"
 val COL_TODOS_ID = "todoID"
 val COL_TODOS_TITLE = "title"
 val COL_TODOS_DESCRIPTION = "description"
-val COL_TODOS_DATE_CREATED = "dateCreated"
 val COL_TODOS_DATE_TARGET = "dateTarget"
+val COL_TODOS_TIME_TARGET = "timeTarget"
 val COL_TODOS_OWNERID = "ownerID"
 
 class DBHelper(context: Context) :
@@ -47,7 +48,7 @@ class DBHelper(context: Context) :
                     "$COL_TODOS_ID INTEGER PRIMARY KEY, " +
                     "$COL_TODOS_TITLE TEXT NOT NULL," +
                     "$COL_TODOS_DESCRIPTION TEXT NOT NULL, " +
-                    "$COL_TODOS_DATE_CREATED TEXT NOT NULL, " +
+                    "$COL_TODOS_TIME_TARGET TEXT NOT NULL, " +
                     "$COL_TODOS_DATE_TARGET TEXT NOT NULL, " +
                     "$COL_TODOS_OWNERID INTEGER NOT NULL, " +
                     "FOREIGN KEY ($COL_TODOS_OWNERID) REFERENCES $TABLE_USERS($COL_USERS_ID))"
@@ -112,6 +113,47 @@ class DBHelper(context: Context) :
         val db = this.readableDatabase
         val query = "DROP TABLE $TABLE_USERS"
         db.execSQL(query)
+    }
+
+    @SuppressLint("Range")
+    fun getTodosByUserId(userId: String): ArrayList<Todo>{
+        val list = ArrayList<Todo>()
+        val db = this.readableDatabase
+        val query = "SELECT * FROM $TABLE_TODOS WHERE $COL_TODOS_OWNERID = '$userId'"
+        val result = db.rawQuery(query, null)
+        if (result.moveToFirst()){
+            do{
+                val todo = Todo()
+                todo.title = result.getString(result.getColumnIndex(COL_TODOS_TITLE)).toString()
+                todo.description = result.getString(result.getColumnIndex(COL_TODOS_DESCRIPTION)).toString()
+                todo.dateTarget = result.getString(result.getColumnIndex(COL_TODOS_DATE_TARGET)).toString()
+                todo.timeTarget = result.getString(result.getColumnIndex(COL_TODOS_TIME_TARGET)).toString()
+                list.add(todo)
+            } while (result.moveToNext())
+        }
+        return list
+    }
+
+    @SuppressLint("NewApi")
+    fun addTodo(userId: Int, title: String, description: String, dateTarget: String, timeTarget: String){
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(COL_TODOS_OWNERID, userId)
+        contentValues.put(COL_TODOS_TITLE, title)
+        contentValues.put(COL_TODOS_DESCRIPTION, description)
+        contentValues.put(COL_TODOS_DATE_TARGET, dateTarget)
+        contentValues.put(COL_TODOS_TIME_TARGET, timeTarget)
+        db.insert(TABLE_TODOS, null, contentValues)
+    }
+
+    @SuppressLint("Range")
+    fun getUserIdFromUsername(username: String): Int{
+        val list = ArrayList<Todo>()
+        val db = this.readableDatabase
+        val query = "SELECT * FROM $TABLE_USERS WHERE $COL_USERS_USERNAME = '$username'"
+        val result = db.rawQuery(query, null)
+        result.moveToFirst()
+        return (result.getInt(result.getColumnIndex(COL_USERS_ID)))
     }
 
 
