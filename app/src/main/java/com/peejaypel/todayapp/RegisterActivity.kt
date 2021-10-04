@@ -19,13 +19,14 @@ class RegisterActivity : AppCompatActivity() {
         var inputUsername = findViewById<EditText>(R.id.register_username)
         var inputPassword = findViewById<EditText>(R.id.register_password)
         var inputPasswordConfirm = findViewById<EditText>(R.id.register_password_confirmation)
+        var inputPhoneNumber = findViewById<EditText>(R.id.register_phone_number)
         val db = DBHelper(this)
 
         btnRegister.setOnClickListener {
             println("$inputPassword =?= $inputPasswordConfirm")
             if (!db.isRegistered(inputUsername.text.toString())) {
                 if (inputPassword.text.toString() == inputPasswordConfirm.text.toString()) {
-                    db.register(inputUsername.text.toString(), inputPassword.text.toString())
+                    db.register(inputUsername.text.toString(), inputPassword.text.toString(), inputPhoneNumber.text.toString())
                     Toast.makeText(this,"Succesfully registered!", Toast.LENGTH_SHORT).show()
                     finish()
                 } else {

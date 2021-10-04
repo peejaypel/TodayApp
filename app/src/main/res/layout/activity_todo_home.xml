@@ -45,11 +45,12 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tvPhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:fontFamily="sans-serif"
-            android:text="You have 5 tasks for today"/>
+            android:text=""/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

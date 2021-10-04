@@ -15,7 +15,7 @@
         android:text="Do laundry"
         android:textSize="30dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/btnDeleteTodo"
+        app:layout_constraintBottom_toTopOf="@+id/todoDescription"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -28,7 +28,7 @@
         android:textAlignment="textEnd"
         app:layout_constraintRight_toLeftOf="@+id/btnDeleteTodo"
         app:layout_constraintBottom_toTopOf="@+id/todoTimeTarget"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/btnDeleteTodo" />
 
     <TextView
         android:id="@+id/todoTimeTarget"
@@ -48,10 +48,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/lipsum"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cbWillMessage"
         app:layout_constraintLeft_toLeftOf="parent"
 
         app:layout_constraintTop_toBottomOf="@+id/todoTitle" />
+
+    <CheckBox
+        android:id="@+id/cbWillMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/todoDescription"
+        app:layout_constraintLeft_toLeftOf="@+id/todoDescription"/>
+
+    <TextView
+        android:id="@+id/tvWillMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/cbWillMessage"
+        app:layout_constraintTop_toTopOf="@+id/cbWillMessage"
+        app:layout_constraintBottom_toBottomOf="@+id/cbWillMessage"
+        android:text="Message me 30mins before target"/>
 
 
     <ImageButton

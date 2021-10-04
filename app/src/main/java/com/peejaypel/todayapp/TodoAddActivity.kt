@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 
 class TodoAddActivity() : AppCompatActivity() {
