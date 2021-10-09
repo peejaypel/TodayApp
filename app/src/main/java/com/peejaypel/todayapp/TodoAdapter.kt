@@ -12,7 +12,7 @@ import android.content.DialogInterface
 
 
 
-class TodoAdapter(private val todos: List<Todo>) : RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
+class TodoAdapter(private val todos: MutableList<Todo>) : RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -76,5 +76,7 @@ class TodoAdapter(private val todos: List<Todo>) : RecyclerView.Adapter<TodoAdap
         println("removeItem(): Attempting to delete item...")
         val todo: Todo = todos[position]
         DBHelper(context).deleteTodo(todo)
+        todos.removeAt(position)
+        notifyItemRemoved(position)
     }
 }
