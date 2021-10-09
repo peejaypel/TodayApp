@@ -153,6 +153,7 @@ class DBHelper(context: Context) :
                 todo.timeTarget =
                     result.getString(result.getColumnIndex(COL_TODOS_TIME_TARGET)).toString()
                 todo.isMessageOn = result.getInt(result.getColumnIndex(COL_TODOS_ISMESSAGEON))
+                todo.ownerId = result.getInt(result.getColumnIndex(COL_TODOS_OWNERID))
                 println("GETTING TODO ${todo.id} WITH MESSAGE ON: ${todo.isMessageOn}")
                 list.add(todo)
             } while (result.moveToNext())

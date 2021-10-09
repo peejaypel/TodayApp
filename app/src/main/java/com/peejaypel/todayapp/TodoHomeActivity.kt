@@ -211,7 +211,7 @@ class TodoHomeActivity() : AppCompatActivity() {
 
         btnAddTodo.setOnClickListener {
             val intent = Intent(this, TodoAddActivity::class.java)
-            intent.putExtra("username", username)
+            intent.putExtra("userId", DBHelper(this).getUserIdFromUsername(username))
             startActivity(intent)
             //DBHelper(this).addTodo("1", "Test1", "Description 1", "July 20, 2001")
             //println("Added")

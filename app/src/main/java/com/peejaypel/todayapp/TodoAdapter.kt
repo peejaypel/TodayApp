@@ -1,18 +1,18 @@
 package com.peejaypel.todayapp
 
-import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import android.content.DialogInterface
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.startActivity
 
 
-
-
-class TodoAdapter(private val todos: MutableList<Todo>) : RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
+class TodoAdapter(private val todos: MutableList<Todo>) :
+    RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -24,6 +24,7 @@ class TodoAdapter(private val todos: MutableList<Todo>) : RecyclerView.Adapter<T
         val tvTimeTarget = itemView.findViewById<TextView>(R.id.todoTimeTarget)
         val cbWillMessage = itemView.findViewById<CheckBox>(R.id.cbWillMessage)
         val btnDeleteTodo = itemView.findViewById<ImageButton>(R.id.btnDeleteTodo)
+        val panelTodoMain = itemView.findViewById<ConstraintLayout>(R.id.panelTodoMain)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -58,8 +59,16 @@ class TodoAdapter(private val todos: MutableList<Todo>) : RecyclerView.Adapter<T
         )
 
         val btnDeleteTodo = holder.btnDeleteTodo
-        btnDeleteTodo.setOnClickListener(View.OnClickListener { removeItem(holder, position, holder.itemView.context) })
+        btnDeleteTodo.setOnClickListener(View.OnClickListener {
+            removeTodo(
+                holder,
+                position,
+                holder.itemView.context
+            )
+        })
 
+        val panelTodoMain = holder.panelTodoMain
+        panelTodoMain.setOnClickListener { updateTodo(holder, position, holder.itemView.context) }
     }
 
     override fun getItemCount(): Int {
@@ -72,7 +81,19 @@ class TodoAdapter(private val todos: MutableList<Todo>) : RecyclerView.Adapter<T
         DBHelper(context).updateTodo(todo)
     }
 
-    private fun removeItem(holder: TodoAdapter.ViewHolder, position: Int, context: Context) {
+    private fun updateTodo(holder: TodoAdapter.ViewHolder, position: Int, context: Context) {
+        println("updateTodo(): Attempting to update todo...")
+        val intent = Intent(context, TodoAddActivity::class.java)
+        intent.putExtra("id", todos[position].id)
+        intent.putExtra("userId", todos[position].ownerId)
+        intent.putExtra("title", todos[position].title)
+        intent.putExtra("timeTarget", todos[position].timeTarget)
+        intent.putExtra("dateTarget", todos[position].dateTarget)
+        intent.putExtra("description", todos[position].description)
+        startActivity(context, intent, null)
+    }
+
+    private fun removeTodo(holder: TodoAdapter.ViewHolder, position: Int, context: Context) {
         println("removeItem(): Attempting to delete item...")
         val todo: Todo = todos[position]
         DBHelper(context).deleteTodo(todo)

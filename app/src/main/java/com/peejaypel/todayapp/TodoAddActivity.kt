@@ -7,9 +7,10 @@ import android.widget.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate
 import java.time.LocalTime
+import java.util.*
 
 class TodoAddActivity() : AppCompatActivity() {
-    private lateinit var username:String
+    private var userId = 0
     @SuppressLint("NewApi")
 
     var localTime: LocalTime = LocalTime.now()
@@ -24,7 +25,7 @@ class TodoAddActivity() : AppCompatActivity() {
 
         val bundle = intent.extras
         if (bundle != null) {
-            username = bundle.getString("username").toString()
+            userId = bundle.getInt("userId")
         }
 
         val btnAddConfirm = findViewById<FloatingActionButton>(R.id.btnAddConfirm)
@@ -34,6 +35,23 @@ class TodoAddActivity() : AppCompatActivity() {
         val inputDate = findViewById<CalendarView>(R.id.inputDate)
 
         val tvDateTime = findViewById<TextView>(R.id.tvDateTime)
+
+        if (bundle!!.containsKey("title")) inputTitle.setText(bundle.getString("title"))
+        if (bundle!!.containsKey("timeTarget")) {
+            var localTime = bundle.getString("timeTarget")
+            inputTime.hour = LocalTime.parse(localTime).hour
+            inputTime.minute = LocalTime.parse(localTime).minute
+        }
+        if (bundle!!.containsKey("dateTarget")) {
+            var localDate = bundle.getString("dateTarget")
+            var calendar =  Calendar.getInstance()
+            calendar.set(Calendar.YEAR, LocalDate.parse(localDate).year)
+            calendar.set(Calendar.MONTH, LocalDate.parse(localDate).monthValue)
+            calendar.set(Calendar.DAY_OF_MONTH, LocalDate.parse(localDate).dayOfMonth)
+
+            inputDate.date = calendar.timeInMillis
+        }
+        if (bundle!!.containsKey("description")) inputDescription.setText(bundle.getString("description"))
 
 
 
@@ -70,7 +88,18 @@ class TodoAddActivity() : AppCompatActivity() {
         btnAddConfirm.setOnClickListener {
             if (inputTitle.text.toString() != "") {
                 if (inputDescription.text.toString() != ""){
-                    DBHelper(this).addTodo(DBHelper(this).getUserIdFromUsername(username), inputTitle.text.toString(), inputDescription.text.toString(), localDate.toString(), localTime.toString())
+                    if (bundle!!.containsKey("id")){
+                        var todo = Todo()
+                        todo.id = bundle.getInt("id")
+                        todo.ownerId = userId
+                        todo.title = inputTitle.text.toString()
+                        todo.description = inputDescription.text.toString()
+                        todo.timeTarget = localTime.toString()
+                        todo.dateTarget = localDate.toString()
+                        DBHelper(this).updateTodo(todo)
+                    } else {
+                        DBHelper(this).addTodo(userId, inputTitle.text.toString(), inputDescription.text.toString(), localDate.toString(), localTime.toString())
+                    }
                     finish()
                 } else {
                     Toast.makeText(this, "Please set a description.", Toast.LENGTH_LONG).show()
