@@ -29,11 +29,6 @@ class TodoHomeActivity() : AppCompatActivity() {
 
     private lateinit var username: String
     private val INTERVAL = 60000//ms * s
-    private val REQUEST_PERMISSION_PHONE_STATE = 1
-    private val REQUEST_PERMISSION_SEND_SMS = 2
-    private val REQUEST_PERMISSION_READ_SMS = 3
-    private val REQUEST_PERMISSION_READ_PHONE_NUMBERS = 4
-    private val permissions = 100
 
     var mHandler: Handler = Handler()
 
@@ -66,19 +61,8 @@ class TodoHomeActivity() : AppCompatActivity() {
 
 
     private fun sendMessage(todo: Todo) {
-        println("sendMessage(): Checking Send SMS permission...")
         val tm = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.SEND_SMS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE),
-                permissions
-            )
-        }
+
         val phoneNumber = DBHelper(this).getPhoneNumberByUserName(username)
         print("sendMessage(): Got local phone number $phoneNumber")
         println("sendMessage(): Attempting to send message...")
@@ -97,95 +81,6 @@ class TodoHomeActivity() : AppCompatActivity() {
         DBHelper(this).updateTodo(todo)
         refreshTodoList()
 
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            REQUEST_PERMISSION_PHONE_STATE -> if (grantResults.size > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED
-            ) {
-                Toast.makeText(this, "Permission Granted!", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Permission Denied!", Toast.LENGTH_SHORT).show()
-            }
-
-            REQUEST_PERMISSION_SEND_SMS -> if (grantResults.size > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED
-            ) {
-                Toast.makeText(this, "Permission Granted!", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Permission Denied!", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-
-    fun checkRequiredPermissions() {
-        var permissionReadPhoneState =
-            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-        var permissionSendMessage =
-            ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
-
-        if (permissionReadPhoneState != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.READ_PHONE_STATE
-                )
-            ) {
-                showExplanation(
-                    "Permission Needed",
-                    "Rationale",
-                    Manifest.permission.READ_PHONE_STATE,
-                    REQUEST_PERMISSION_PHONE_STATE
-                );
-            } else requestPermission(
-                Manifest.permission.READ_PHONE_STATE,
-                REQUEST_PERMISSION_PHONE_STATE
-            );
-        } else {
-            Toast.makeText(this, "Permission (already) Granted!", Toast.LENGTH_SHORT).show();
-        }
-
-        if (permissionSendMessage != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.SEND_SMS
-                )
-            ) {
-                showExplanation(
-                    "Permission Needed",
-                    "Rationale",
-                    Manifest.permission.SEND_SMS,
-                    REQUEST_PERMISSION_PHONE_STATE
-                );
-            } else requestPermission(Manifest.permission.SEND_SMS, REQUEST_PERMISSION_PHONE_STATE);
-        } else {
-            Toast.makeText(this, "Permission (already) Granted!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private fun showExplanation(
-        title: String,
-        message: String,
-        permission: String,
-        permissionRequestCode: Int
-    ) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(
-                android.R.string.ok
-            ) { dialog, id -> requestPermission(permission, permissionRequestCode) }
-        builder.create().show()
-    }
-
-    private fun requestPermission(permissionName: String, permissionRequestCode: Int) {
-        ActivityCompat.requestPermissions(this, arrayOf(permissionName), permissionRequestCode)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
