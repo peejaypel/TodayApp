@@ -37,12 +37,12 @@ class DBHelper(context: Context) :
     override fun onCreate(db: SQLiteDatabase) {
 
         //Initiating Users Table
-        val query = ("CREATE TABLE " +
+        val query = "CREATE TABLE " +
                 TABLE_USERS + " (" +
                 COL_USERS_ID + " INTEGER PRIMARY KEY, " +
                 COL_USERS_USERNAME + " TEXT NOT NULL, " +
                 COL_USERS_PASSWORD + " TEXT NOT NULL, " +
-                COL_USERS_PHONE_NUMBER + " TEXT NOT NULL" + ")")
+                COL_USERS_PHONE_NUMBER + " TEXT NOT NULL" + ")"
         db.execSQL(query)
 
         //Initiating Todos Table
@@ -209,6 +209,8 @@ class DBHelper(context: Context) :
         val db = this.writableDatabase
         db.delete(TABLE_TODOS, "$COL_TODOS_ID = ?", arrayOf(todo.id.toString()))
         db.close()
+//        todoAdapter.notifyItemRemoved(position)
+//        println("removeItem(): Item removed...")
     }
 
     @SuppressLint("Range")

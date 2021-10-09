@@ -1,14 +1,16 @@
 package com.peejaypel.todayapp
 
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.CompoundButton
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import android.content.DialogInterface
+
+
+
 
 class TodoAdapter(private val todos: List<Todo>) : RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
 
@@ -21,6 +23,7 @@ class TodoAdapter(private val todos: List<Todo>) : RecyclerView.Adapter<TodoAdap
         val tvDateTarget = itemView.findViewById<TextView>(R.id.todoDateTarget)
         val tvTimeTarget = itemView.findViewById<TextView>(R.id.todoTimeTarget)
         val cbWillMessage = itemView.findViewById<CheckBox>(R.id.cbWillMessage)
+        val btnDeleteTodo = itemView.findViewById<ImageButton>(R.id.btnDeleteTodo)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -42,6 +45,7 @@ class TodoAdapter(private val todos: List<Todo>) : RecyclerView.Adapter<TodoAdap
         dateTarget.setText(todo.dateTarget)
         val timeTarget = holder.tvTimeTarget
         timeTarget.setText(todo.timeTarget)
+
         val cbWillMessage = holder.cbWillMessage
         cbWillMessage.setOnCheckedChangeListener(null)
         cbWillMessage.isChecked = todo.isMessageOn == 1
@@ -52,6 +56,9 @@ class TodoAdapter(private val todos: List<Todo>) : RecyclerView.Adapter<TodoAdap
             }
         }
         )
+
+        val btnDeleteTodo = holder.btnDeleteTodo
+        btnDeleteTodo.setOnClickListener(View.OnClickListener { removeItem(holder, position, holder.itemView.context) })
 
     }
 
@@ -65,7 +72,9 @@ class TodoAdapter(private val todos: List<Todo>) : RecyclerView.Adapter<TodoAdap
         DBHelper(context).updateTodo(todo)
     }
 
-    private fun deleteItem() {
-
+    private fun removeItem(holder: TodoAdapter.ViewHolder, position: Int, context: Context) {
+        println("removeItem(): Attempting to delete item...")
+        val todo: Todo = todos[position]
+        DBHelper(context).deleteTodo(todo)
     }
 }

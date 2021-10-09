@@ -34,7 +34,6 @@ class TodoHomeActivity() : AppCompatActivity() {
     private val REQUEST_PERMISSION_READ_SMS = 3
     private val REQUEST_PERMISSION_READ_PHONE_NUMBERS = 4
     private val permissions = 100
-    private val permission = 101
 
     var mHandler: Handler = Handler()
 
@@ -244,6 +243,7 @@ class TodoHomeActivity() : AppCompatActivity() {
         val rvTodos = findViewById<RecyclerView>(R.id.rvTodo)
         todos = DBHelper(this).getTodosByUserName(username)
         val adapter = TodoAdapter(todos)
+
         println("${adapter.itemCount} =======================================================")
         if (adapter.itemCount > 0) {
             rvTodos.adapter = adapter
