@@ -74,7 +74,7 @@ class TodoHomeActivity() : AppCompatActivity() {
                 "\nDue Time: ${todo.timeTarget}"
         val smsManager: SmsManager = SmsManager.getDefault()
         val sentPI: PendingIntent = PendingIntent.getBroadcast(this, 0, Intent("SMS_SENT"), 0)
-        //smsManager.sendTextMessage(phoneNumber, null, message, sentPI, null)
+        smsManager.sendTextMessage(phoneNumber, null, message, sentPI, null)
         Toast.makeText(this, " Message Sent", Toast.LENGTH_SHORT).show()
         println("sendMessage(): Message sent!")
         todo.isMessageOn = 0
