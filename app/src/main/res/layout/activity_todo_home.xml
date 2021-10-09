@@ -30,7 +30,7 @@
                 android:id="@+id/tvGreeting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hi, user!"
+                android:text="@string/home_default_greet"
                 android:fontFamily="sans-serif-medium"
                 android:textColor="@color/white"
                 android:textSize="40dp"/>
