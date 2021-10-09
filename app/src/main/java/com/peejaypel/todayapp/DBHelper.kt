@@ -205,6 +205,12 @@ class DBHelper(context: Context) :
         db.close()
     }
 
+    fun deleteTodo(todo: Todo){
+        val db = this.writableDatabase
+        db.delete(TABLE_TODOS, "$COL_TODOS_ID = ?", arrayOf(todo.id.toString()))
+        db.close()
+    }
+
     @SuppressLint("Range")
     fun getUserIdFromUsername(username: String): Int {
         val list = ArrayList<Todo>()
