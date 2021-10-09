@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:fontFamily="sans-serif"
-            android:text="July 20, 2021"/>
+            android:text="@string/home_default_date"/>
 
     </LinearLayout>
 
